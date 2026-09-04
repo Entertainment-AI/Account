@@ -42,12 +42,30 @@ public class EmailSenderService : IEmailSender
 
             var mail = new MailMessage
             {
-                From = new MailAddress(smtpUser, "Nyxoris Tarot"),
-                Subject = "✦ Kích hoạt tài khoản Nyxoris Tarot của bạn ✦",
-                Body = EmailVerificationTemplate.BuildHtmlTemplate(verificationUrl),
-                IsBodyHtml = true
+                From = new MailAddress(smtpUser, "Nyxoris"),
+                Subject = "Xác thực tài khoản Nyxoris",
+                Body = EmailVerificationTemplate.BuildPlainText(verificationUrl),
+                IsBodyHtml = false
             };
             mail.To.Add(recipientEmail);
+
+            // Cung cấp đồng thời cả bản HTML và bản Plain Text (Multi-part MIME Alternative giảm nguy cơ bị Gmail đánh dấu spam)
+            var plainTextView = AlternateView.CreateAlternateViewFromString(
+                EmailVerificationTemplate.BuildPlainText(verificationUrl),
+                System.Text.Encoding.UTF8,
+                "text/plain");
+
+            var htmlView = AlternateView.CreateAlternateViewFromString(
+                EmailVerificationTemplate.BuildHtmlTemplate(verificationUrl),
+                System.Text.Encoding.UTF8,
+                "text/html");
+
+            mail.AlternateViews.Add(plainTextView);
+            mail.AlternateViews.Add(htmlView);
+
+            // Tiêu chuẩn gửi email giao dịch tự động
+            mail.Headers.Add("X-Auto-Response-Suppress", "All");
+            mail.Headers.Add("Auto-Submitted", "auto-generated");
 
             await client.SendMailAsync(mail, ct);
             _logger.LogInformation("Verification email sent to {Email}", recipientEmail);

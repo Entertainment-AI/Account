@@ -13,6 +13,7 @@ builder.Services.AddControllers()
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
+builder.Services.AddMemoryCache();
 
 // 2. Add Application & Infrastructure
 builder.Services.AddApplication();

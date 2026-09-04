@@ -18,50 +18,102 @@ Reason: {Reason}
 ", email, reason, url);
     }
 
+    public static string BuildPlainText(string verificationUrl)
+    {
+        return $@"Xác thực tài khoản Nyxoris
+
+Xin chào,
+
+Bạn nhận được email này vì đã đăng ký tài khoản tại Nyxoris. Vui lòng truy cập liên kết sau để xác thực tài khoản của bạn:
+
+{verificationUrl}
+
+Liên kết này có hiệu lực trong vòng 24 giờ.
+Nếu bạn không yêu cầu tạo tài khoản Nyxoris, vui lòng bỏ qua email này.
+
+---
+Đây là email tự động, vui lòng không phản hồi lại thư này.";
+    }
+
     public static string BuildHtmlTemplate(string verificationUrl)
     {
         return $@"
-<!DOCTYPE html>
-<html lang=""vi"">
+<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Transitional//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"">
+<html xmlns=""http://www.w3.org/1999/xhtml"" lang=""vi"">
 <head>
-  <meta charset=""UTF-8"">
-  <style>
-    body {{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #121316; color: #f4f4f5; margin: 0; padding: 0; }}
-    .wrapper {{ max-width: 540px; margin: 30px auto; background-color: #191a1e; border: 1px solid #2d3039; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }}
-    .header {{ background: linear-gradient(135deg, #23252e 0%, #17181c 100%); padding: 32px 24px; text-align: center; border-bottom: 1px solid #2d3039; }}
-    .header h1 {{ margin: 0; font-size: 24px; color: #f4f4f5; font-weight: 700; letter-spacing: 0.5px; }}
-    .header p {{ margin: 6px 0 0; font-size: 13px; color: #a1a1aa; }}
-    .content {{ padding: 36px 28px; text-align: center; }}
-    .badge {{ display: inline-block; background-color: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); color: #fbbf24; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 9999px; margin-bottom: 16px; }}
-    .btn-box {{ margin: 32px 0; text-align: center; }}
-    .btn-verify {{ display: inline-block; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #000000 !important; font-weight: 700; font-size: 14px; text-decoration: none; padding: 15px 36px; border-radius: 12px; letter-spacing: 0.5px; box-shadow: 0 4px 20px rgba(245, 158, 11, 0.35); }}
-    .raw-link-box {{ background: #141518; border: 1px solid #272930; border-radius: 10px; padding: 12px; word-break: break-all; font-size: 11px; color: #a1a1aa; margin-top: 24px; }}
-    .note {{ font-size: 13px; color: #9ca3af; line-height: 1.6; margin-top: 20px; }}
-    .footer {{ background-color: #141518; padding: 20px 24px; text-align: center; border-top: 1px solid #252730; font-size: 11px; color: #71717a; }}
-  </style>
+  <meta http-equiv=""Content-Type"" content=""text/html; charset=UTF-8"" />
+  <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"" />
+  <title>Xác thực tài khoản Nyxoris</title>
 </head>
-<body>
-  <div class=""wrapper"">
-    <div class=""header"">
-      <h1>✦ NYXORIS TAROT ✦</h1>
-      <p>Nen Tang Boc Bai & Luan Giai Chiem Tinh Hoc 3D</p>
-    </div>
-    <div class=""content"">
-      <div class=""badge"">XAC THUC EMAIL TAI KHOAN</div>
-      <h2 style=""font-size: 20px; color: #ffffff; margin: 0 0 10px; font-weight: 700;"">Kich Hoat Tai Khoan Cua Ban</h2>
-      <p style=""font-size: 13px; color: #d4d4d8; margin: 0; line-height: 1.6;"">Nhan vao nut ben duoi de xac thuc email va mo khoa toan quyen tro chuyen truc tiep cung AI Reader:</p>
-      
-      <div class=""btn-box"">
-        <a href=""{verificationUrl}"" class=""btn-verify"" target=""_blank"">✦ KICH HOAT TAI KHOAN NGAY ✦</a>
-      </div>
+<body style=""margin:0; padding:0; background-color:#ffffff; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; -webkit-font-smoothing:antialiased; color:#1f2937;"">
+  <table role=""presentation"" border=""0"" cellpadding=""0"" cellspacing=""0"" width=""100%"" style=""background-color:#ffffff; padding:40px 20px;"">
+    <tr>
+      <td align=""center"">
+        <table role=""presentation"" border=""0"" cellpadding=""0"" cellspacing=""0"" width=""100%"" style=""max-width:520px; text-align:left;"">
+          
+          <!-- Heading -->
+          <tr>
+            <td style=""padding-bottom:16px;"">
+              <h1 style=""margin:0; font-size:22px; font-weight:600; color:#111827; letter-spacing:-0.3px; line-height:1.3;"">
+                Xác thực tài khoản
+              </h1>
+            </td>
+          </tr>
 
-      <p class=""note"">Lien ket nay co hieu luc trong vong <strong>24 gio</strong>.<br>Neu nut tren khong hoat dong, ban co the sao chep lien ket ben duoi:</p>
-      <div class=""raw-link-box"">{verificationUrl}</div>
-    </div>
-    <div class=""footer"">
-      &copy; 2026 Nyxoris Tarot. Bao luu moi quyen.<br>Day la email tu dong, vui long khong tra loi thu nay.
-    </div>
-  </div>
+          <!-- Body Text -->
+          <tr>
+            <td style=""padding-bottom:28px; font-size:15px; line-height:1.6; color:#374151;"">
+              Xin chào,<br/><br/>
+              Bạn nhận được email này vì đã đăng ký tài khoản tại <strong style=""color:#111827;"">Nyxoris</strong>. Vui lòng xác thực địa chỉ email để hoàn tất quá trình thiết lập tài khoản:
+            </td>
+          </tr>
+
+          <!-- CTA Button -->
+          <tr>
+            <td style=""padding-bottom:28px;"">
+              <table role=""presentation"" border=""0"" cellpadding=""0"" cellspacing=""0"">
+                <tr>
+                  <td align=""center"" style=""border-radius:6px; background-color:#111827;"">
+                    <a href=""{verificationUrl}"" target=""_blank"" style=""display:inline-block; padding:12px 24px; font-size:14px; font-weight:500; color:#ffffff; text-decoration:none; border-radius:6px;"">
+                      Xác thực tài khoản
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Expiry Note -->
+          <tr>
+            <td style=""padding-bottom:28px; font-size:13px; line-height:1.6; color:#6b7280;"">
+              Liên kết xác thực có hiệu lực trong vòng 24 giờ.<br/>
+              Nếu bạn không yêu cầu tạo tài khoản Nyxoris, vui lòng bỏ qua email này.
+            </td>
+          </tr>
+
+          <!-- Divider & Link -->
+          <tr>
+            <td style=""border-top:1px solid #e5e7eb; padding-top:20px;"">
+              <p style=""margin:0 0 8px; font-size:12px; color:#6b7280; line-height:1.5;"">
+                Nếu không thể nhấp vào nút bên trên, bạn có thể sao chép và dán liên kết sau vào trình duyệt:
+              </p>
+              <p style=""margin:0; font-size:12px; line-height:1.5; word-break:break-all;"">
+                <a href=""{verificationUrl}"" target=""_blank"" style=""color:#2563eb; text-decoration:none;"">{verificationUrl}</a>
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style=""padding-top:28px; font-size:12px; color:#9ca3af; line-height:1.5;"">
+              Đây là email tự động, vui lòng không phản hồi lại thư này.
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>";
     }
