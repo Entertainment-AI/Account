@@ -1,5 +1,6 @@
 using Account.Application.Common;
 using Account.Application.Common.Interfaces;
+using Account.Domain.Common.DateTimes;
 using Account.Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.Caching.Memory;
@@ -32,8 +33,8 @@ public class SendVerificationEmailCommandHandler : IRequestHandler<SendVerificat
 
         if (_memoryCache.TryGetValue<DateTime>(cooldownKey, out var nextAllowedAt))
         {
-            var remainingSeconds = (int)Math.Max(1, Math.Ceiling((nextAllowedAt - DateTime.UtcNow).TotalSeconds));
-            return Result<string>.Failure(new Error("RATE_LIMIT_EXCEEDED", $"Vui lòng chờ thêm {remainingSeconds}s trước khi yêu cầu gửi lại email."));
+            var remainingSeconds = (int)Math.Max(1, Math.Ceiling((nextAllowedAt - Clock.Now).TotalSeconds));
+            return Result<string>.Failure(new Error("RATE_LIMIT_EXCEEDED", $"Please wait {remainingSeconds}s before requesting another verification email."));
         }
 
         var userRepo = _unitOfWork.GetRepository<User>();
@@ -51,8 +52,8 @@ public class SendVerificationEmailCommandHandler : IRequestHandler<SendVerificat
         var token = _jwtTokenGenerator.GenerateEmailVerificationToken(normalizedEmail);
         await _emailSender.SendVerificationLinkAsync(normalizedEmail, token, cancellationToken);
 
-        // Đặt thời gian cooldown 60 giây chống spam
-        _memoryCache.Set(cooldownKey, DateTime.UtcNow.AddSeconds(60), TimeSpan.FromSeconds(60));
+        // Set 60-second cooldown rate limit to prevent email spam
+        _memoryCache.Set(cooldownKey, Clock.Now.AddSeconds(60), TimeSpan.FromSeconds(60));
 
         return Result<string>.Success($"Verification link has been sent to {normalizedEmail}");
     }
