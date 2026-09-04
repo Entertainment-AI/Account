@@ -55,7 +55,11 @@ public class JwtTokenGenerator : IJwtTokenGenerator
             new(JwtRegisteredClaimNames.Jti, Guid.CreateVersion7().ToString())
         };
 
-        var expirationMinutes = double.TryParse(_configuration["Jwt:ExpirationMinutes"], out var exp) ? exp : 10080;
+        if (!double.TryParse(_configuration["Jwt:ExpirationMinutes"], out var expirationMinutes) || expirationMinutes <= 0)
+        {
+            _logger.LogError("Configuration key 'Jwt:ExpirationMinutes' is null, missing, or invalid.");
+            throw new InvalidOperationException("Configuration key 'Jwt:ExpirationMinutes' is null, missing, or invalid.");
+        }
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
