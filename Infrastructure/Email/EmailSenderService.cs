@@ -22,7 +22,7 @@ public class EmailSenderService : IEmailSender
         var clientUrl = _configuration["Mail:ClientUrl"] ?? "http://localhost:3000";
         var verificationUrl = clientUrl.TrimEnd('/') + "/verify-email?token=" + token;
         var smtpUser = _configuration["Mail:Username"];
-        var smtpPass = _configuration["Mail:Password"];
+        var smtpPass = _configuration["Mail:Password"]?.Replace(" ", "");
         var host = _configuration["Mail:Host"] ?? "smtp.gmail.com";
         var port = int.TryParse(_configuration["Mail:Port"], out var p) ? p : 587;
 
