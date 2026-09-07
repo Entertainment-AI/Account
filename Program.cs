@@ -4,6 +4,13 @@ using Account.Infrastructure.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Cloud dynamic PORT binding (Render, Railway, Fly.io, etc.)
+var port = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrEmpty(port))
+{
+    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+}
+
 // 1. Add Controllers with JsonStringEnumConverter
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
