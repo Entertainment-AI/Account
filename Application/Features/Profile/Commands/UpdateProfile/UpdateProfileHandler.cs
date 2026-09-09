@@ -25,7 +25,7 @@ public class UpdateProfileCommandHandler : IRequestHandler<UpdateProfileCommand,
             return Result<ProfileDto>.Failure(new Error("USER_NOT_FOUND", "User not found."));
         }
 
-        user.UpdateProfile(request.DisplayName, request.AvatarUrl);
+        user.UpdateProfile(request.DisplayName, request.AvatarUrl, request.DateOfBirth, request.Gender);
         userRepo.Update(user);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 

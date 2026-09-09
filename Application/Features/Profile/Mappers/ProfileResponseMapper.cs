@@ -13,6 +13,8 @@ public static class ProfileResponseMapper
             Username: user.UserName,
             DisplayName: user.DisplayName ?? string.Empty,
             AvatarUrl: user.AvatarUrl ?? string.Empty,
+            DateOfBirth: user.DateOfBirth,
+            Gender: user.Gender,
             IsEmailVerified: user.IsEmailVerified,
             Role: user.Role.ToString().ToUpperInvariant()
         );
