@@ -12,6 +12,8 @@ public class User : BaseEntity
     public string UserName { get; private set; } = null!;
     public string DisplayName { get; private set; } = null!;
     public string AvatarUrl { get; private set; } = null!;
+    public DateOnly? DateOfBirth { get; private set; }
+    public Gender? Gender { get; private set; }
     public UserRole Role { get; private set; }
     public bool IsEmailVerified { get; private set; }
     public DateTime? LastUserNameChangedAt { get; private set; }
@@ -24,6 +26,8 @@ public class User : BaseEntity
         string userName,
         string? displayName = null,
         string? avatarUrl = null,
+        DateOnly? dateOfBirth = null,
+        Gender? gender = null,
         UserRole role = UserRole.User,
         bool isEmailVerified = false)
     {
@@ -32,6 +36,8 @@ public class User : BaseEntity
         UserName = NormalizeUserName(userName);
         DisplayName = displayName?.Trim() ?? (userName?.Trim() ?? string.Empty);
         AvatarUrl = avatarUrl?.Trim() ?? string.Empty;
+        DateOfBirth = dateOfBirth;
+        Gender = gender;
         Role = role;
         IsEmailVerified = isEmailVerified;
     }
@@ -42,10 +48,12 @@ public class User : BaseEntity
         string userName,
         string? displayName = null,
         string? avatarUrl = null,
+        DateOnly? dateOfBirth = null,
+        Gender? gender = null,
         UserRole role = UserRole.User,
         bool isEmailVerified = false)
     {
-        return new User(email, passwordHash, userName, displayName, avatarUrl, role, isEmailVerified);
+        return new User(email, passwordHash, userName, displayName, avatarUrl, dateOfBirth, gender, role, isEmailVerified);
     }
 
     private string NormalizeUserName(string raw)
@@ -57,10 +65,12 @@ public class User : BaseEntity
         return cleaned;
     }
 
-    public void UpdateProfile(string? displayName, string? avatarUrl)
+    public void UpdateProfile(string? displayName, string? avatarUrl, DateOnly? dateOfBirth = null, Gender? gender = null)
     {
         if (!string.IsNullOrWhiteSpace(displayName)) DisplayName = displayName.Trim();
         if (avatarUrl != null) AvatarUrl = avatarUrl.Trim();
+        if (dateOfBirth.HasValue) DateOfBirth = dateOfBirth;
+        if (gender.HasValue) Gender = gender;
         Touch();
     }
 
