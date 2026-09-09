@@ -20,6 +20,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.UserName).HasColumnName("UserName").HasMaxLength(100);
         builder.Property(u => u.DisplayName).HasColumnName("DisplayName").HasMaxLength(100);
         builder.Property(u => u.AvatarUrl).HasColumnName("AvatarUrl").HasMaxLength(500);
+        builder.Property(u => u.DateOfBirth).HasColumnName("DateOfBirth").HasColumnType("date");
+        builder.Property(u => u.Gender).HasColumnName("Gender").HasConversion<string>().HasMaxLength(20);
 
         builder.Property(u => u.Role).HasColumnName("Role").HasConversion<string>().HasMaxLength(50).IsRequired();
         builder.Property(u => u.IsEmailVerified).HasColumnName("IsEmailVerified").IsRequired();
