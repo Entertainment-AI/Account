@@ -1,5 +1,5 @@
-using Account.Application.Features.Profile.Commands.UpdateProfile;
-using Account.Application.Features.Profile.Queries.GetMyProfile;
+using Account.Application.Features.Wallets.Commands.DepositWallet;
+using Account.Application.Features.Wallets.Queries.GetMyWallet;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -7,31 +7,31 @@ using Microsoft.AspNetCore.Mvc;
 namespace Account.Presentation.Http.Controllers;
 
 [ApiController]
-[Route("api/v1/profile")]
+[Route("api/v1/wallet")]
 [Authorize]
-public class ProfileController : ControllerBase
+public class WalletController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public ProfileController(IMediator mediator)
+    public WalletController(IMediator mediator)
     {
         _mediator = mediator;
     }
 
     [HttpGet("me")]
-    public async Task<IActionResult> GetMyProfile()
+    public async Task<IActionResult> GetMyWallet()
     {
-        var result = await _mediator.Send(new GetMyProfileQuery());
+        var result = await _mediator.Send(new GetMyWalletQuery());
         if (result.IsFailure)
         {
-            return NotFound(new { code = result.Error.Code, message = result.Error.Message });
+            return BadRequest(new { code = result.Error.Code, message = result.Error.Message });
         }
 
         return Ok(result.Value);
     }
 
-    [HttpPut("me")]
-    public async Task<IActionResult> UpdateMyProfile([FromBody] UpdateProfileCommand command)
+    [HttpPost("deposit")]
+    public async Task<IActionResult> Deposit([FromBody] DepositWalletCommand command)
     {
         var result = await _mediator.Send(command);
         if (result.IsFailure)
