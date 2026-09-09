@@ -19,8 +19,6 @@ public class ProfileController : ControllerBase
         _mediator = mediator;
     }
 
-    public record UpdateProfileRequest(string? DisplayName, string? AvatarUrl);
-
     [HttpGet("me")]
     public async Task<IActionResult> GetMyProfile()
     {
@@ -48,7 +46,7 @@ public class ProfileController : ControllerBase
             return Unauthorized(new { code = "UNAUTHORIZED", message = "User is not authenticated." });
         }
 
-        var result = await _mediator.Send(new UpdateProfileCommand(userId, request.DisplayName, request.AvatarUrl));
+        var result = await _mediator.Send(new UpdateProfileCommand(userId, request.DisplayName, request.AvatarUrl, request.DateOfBirth, request.Gender));
         if (result.IsFailure)
         {
             return BadRequest(new { code = result.Error.Code, message = result.Error.Message });

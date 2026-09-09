@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Account.Application.Common.Converters;
 using Account.Application.DependencyInjection;
 using Account.Infrastructure.DependencyInjection;
 
@@ -11,11 +12,13 @@ if (!string.IsNullOrEmpty(port))
     builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 }
 
-// 1. Add Controllers with JsonStringEnumConverter
+// 1. Add Controllers with JsonStringEnumConverter and FlexibleDateOnlyJsonConverters
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        options.JsonSerializerOptions.Converters.Add(new FlexibleDateOnlyJsonConverter());
+        options.JsonSerializerOptions.Converters.Add(new FlexibleNullableDateOnlyJsonConverter());
     });
 
 builder.Services.AddEndpointsApiExplorer();
