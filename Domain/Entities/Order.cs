@@ -18,10 +18,6 @@ public class Order : BaseEntity
     public DateTime? PaidAt { get; private set; }
     public string? Metadata { get; private set; }
 
-    // Navigation properties for EF Core
-    public User? User { get; private set; }
-    public Plan? Plan { get; private set; }
-
     private Order() { } // EF Core
 
     private Order(
@@ -43,7 +39,7 @@ public class Order : BaseEntity
         Status = OrderStatus.Pending;
         PaymentMethod = paymentMethod;
         PlanId = planId;
-        Metadata = metadata;
+        Metadata = FormatMetadata(metadata);
     }
 
     public static Order CreateSubscriptionOrder(
@@ -73,6 +69,17 @@ public class Order : BaseEntity
         return $"{prefix}_{Clock.Now:yyyyMMdd}_{Guid.CreateVersion7().ToString("N")[..8].ToUpperInvariant()}";
     }
 
+    private static string? FormatMetadata(string? raw)
+    {
+        if (string.IsNullOrWhiteSpace(raw)) return null;
+        var trimmed = raw.Trim();
+        if ((trimmed.StartsWith('{') && trimmed.EndsWith('}')) || (trimmed.StartsWith('[') && trimmed.EndsWith(']')))
+        {
+            return trimmed;
+        }
+        return $"{{\"note\": \"{trimmed.Replace("\"", "\\\"")}\"}}";
+    }
+
     public void MarkCompleted(DateTime? paidAt = null, string? metadata = null)
     {
         if (Status != OrderStatus.Pending)
@@ -82,7 +89,7 @@ public class Order : BaseEntity
 
         Status = OrderStatus.Completed;
         PaidAt = paidAt ?? Clock.Now;
-        if (!string.IsNullOrWhiteSpace(metadata)) Metadata = metadata;
+        if (!string.IsNullOrWhiteSpace(metadata)) Metadata = FormatMetadata(metadata);
         Touch();
     }
 
@@ -91,7 +98,7 @@ public class Order : BaseEntity
         if (Status != OrderStatus.Pending) return;
 
         Status = OrderStatus.Failed;
-        if (!string.IsNullOrWhiteSpace(metadata)) Metadata = metadata;
+        if (!string.IsNullOrWhiteSpace(metadata)) Metadata = FormatMetadata(metadata);
         Touch();
     }
 

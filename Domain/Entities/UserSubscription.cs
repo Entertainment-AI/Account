@@ -14,10 +14,6 @@ public class UserSubscription : BaseEntity
     public SubscriptionStatus Status { get; private set; }
     public bool AutoRenew { get; private set; }
 
-    // Navigation properties for EF Core
-    public User? User { get; private set; }
-    public Plan? Plan { get; private set; }
-
     private UserSubscription() { } // EF Core
 
     private UserSubscription(

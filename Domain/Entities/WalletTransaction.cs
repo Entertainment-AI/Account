@@ -15,10 +15,6 @@ public class WalletTransaction : BaseEntity
     public Guid? OrderId { get; private set; }
     public string Description { get; private set; } = null!;
 
-    // Navigation properties for EF Core
-    public Wallet? Wallet { get; private set; }
-    public Order? Order { get; private set; }
-
     private WalletTransaction() { } // EF Core
 
     internal WalletTransaction(

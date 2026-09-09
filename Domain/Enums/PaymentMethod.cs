@@ -5,5 +5,6 @@ public enum PaymentMethod
     Wallet,
     BankTransfer,
     VNPay,
-    MoMo
+    MoMo,
+    Free
 }
