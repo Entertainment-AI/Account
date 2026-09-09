@@ -15,10 +15,15 @@ public class AccountDbContext : BaseDbContext, IAccountDbContext
     }
 
     public DbSet<User> Users => Set<User>();
+    public DbSet<Plan> Plans => Set<Plan>();
+    public DbSet<UserSubscription> UserSubscriptions => Set<UserSubscription>();
+    public DbSet<Order> Orders => Set<Order>();
+    public DbSet<Wallet> Wallets => Set<Wallet>();
+    public DbSet<WalletTransaction> WalletTransactions => Set<WalletTransaction>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AccountDbContext).Assembly);
     }
 }
