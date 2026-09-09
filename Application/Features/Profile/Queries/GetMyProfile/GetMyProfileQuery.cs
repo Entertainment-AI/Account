@@ -4,4 +4,4 @@ using MediatR;
 
 namespace Account.Application.Features.Profile.Queries.GetMyProfile;
 
-public record GetMyProfileQuery(Guid UserId) : IRequest<Result<ProfileDto>>;
+public record GetMyProfileQuery : IRequest<Result<ProfileDto>>;

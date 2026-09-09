@@ -7,9 +7,6 @@ public class UpdateProfileCommandValidator : AbstractValidator<UpdateProfileComm
 {
     public UpdateProfileCommandValidator()
     {
-        RuleFor(x => x.UserId)
-            .NotEmpty().WithMessage("UserId is required.");
-
         RuleFor(x => x.DisplayName)
             .MaximumLength(50).WithMessage("Display name cannot exceed 50 characters.")
             .When(x => !string.IsNullOrEmpty(x.DisplayName));

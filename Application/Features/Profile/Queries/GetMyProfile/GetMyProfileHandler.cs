@@ -10,16 +10,26 @@ namespace Account.Application.Features.Profile.Queries.GetMyProfile;
 public class GetMyProfileQueryHandler : IRequestHandler<GetMyProfileQuery, Result<ProfileDto>>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ICurrentUserProvider _currentUserProvider;
 
-    public GetMyProfileQueryHandler(IUnitOfWork unitOfWork)
+    public GetMyProfileQueryHandler(IUnitOfWork unitOfWork, ICurrentUserProvider currentUserProvider)
     {
         _unitOfWork = unitOfWork;
+        _currentUserProvider = currentUserProvider;
     }
 
     public async Task<Result<ProfileDto>> Handle(GetMyProfileQuery request, CancellationToken cancellationToken)
     {
+        var currentUserId = _currentUserProvider.UserId;
+        if (currentUserId == null)
+        {
+            return Result<ProfileDto>.Failure(new Error("UNAUTHORIZED", "User is not authenticated."));
+        }
+
+        var userId = currentUserId.Value;
+
         var userRepo = _unitOfWork.GetRepository<User>();
-        var user = await userRepo.GetByIdAsync(request.UserId, cancellationToken);
+        var user = await userRepo.GetByIdAsync(userId, cancellationToken);
         if (user == null || user.Deleted)
         {
             return Result<ProfileDto>.Failure(new Error("USER_NOT_FOUND", "Profile not found for current user."));
