@@ -23,8 +23,8 @@ public class WalletConfiguration : IEntityTypeConfiguration<Wallet>
         builder.Property(w => w.Currency).HasColumnName("Currency").HasMaxLength(10).IsRequired();
         builder.Property(w => w.Status).HasColumnName("Status").HasConversion<string>().HasMaxLength(20).IsRequired();
 
-        builder.HasOne(w => w.User).WithMany().HasForeignKey(w => w.UserId).OnDelete(DeleteBehavior.Restrict);
-        builder.HasMany(w => w.Transactions).WithOne(t => t.Wallet).HasForeignKey(t => t.WalletId).OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne<User>().WithMany().HasForeignKey(w => w.UserId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasMany(w => w.Transactions).WithOne().HasForeignKey(nameof(WalletTransaction.WalletId)).OnDelete(DeleteBehavior.Cascade);
 
         builder.Property(w => w.CreatedAt).HasColumnName("CreatedAt").IsRequired();
         builder.Property(w => w.UpdatedAt).HasColumnName("UpdatedAt");

@@ -26,8 +26,8 @@ public class UserSubscriptionConfiguration : IEntityTypeConfiguration<UserSubscr
         builder.Property(s => s.Status).HasColumnName("Status").HasConversion<string>().HasMaxLength(20).IsRequired();
         builder.Property(s => s.AutoRenew).HasColumnName("AutoRenew").IsRequired();
 
-        builder.HasOne(s => s.User).WithMany().HasForeignKey(s => s.UserId).OnDelete(DeleteBehavior.Restrict);
-        builder.HasOne(s => s.Plan).WithMany().HasForeignKey(s => s.PlanId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne<User>().WithMany().HasForeignKey(s => s.UserId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne<Plan>().WithMany().HasForeignKey(s => s.PlanId).OnDelete(DeleteBehavior.Restrict);
 
         builder.Property(s => s.CreatedAt).HasColumnName("CreatedAt").IsRequired();
         builder.Property(s => s.UpdatedAt).HasColumnName("UpdatedAt");

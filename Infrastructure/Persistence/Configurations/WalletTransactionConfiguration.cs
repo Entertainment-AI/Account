@@ -27,7 +27,7 @@ public class WalletTransactionConfiguration : IEntityTypeConfiguration<WalletTra
         builder.Property(t => t.OrderId).HasColumnName("OrderId");
         builder.Property(t => t.Description).HasColumnName("Description").HasMaxLength(255).IsRequired();
 
-        builder.HasOne(t => t.Order).WithMany().HasForeignKey(t => t.OrderId).OnDelete(DeleteBehavior.SetNull);
+        builder.HasOne<Order>().WithMany().HasForeignKey(t => t.OrderId).OnDelete(DeleteBehavior.SetNull);
 
         builder.Property(t => t.CreatedAt).HasColumnName("CreatedAt").IsRequired();
         builder.Property(t => t.UpdatedAt).HasColumnName("UpdatedAt");

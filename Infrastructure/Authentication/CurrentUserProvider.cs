@@ -25,4 +25,6 @@ public class CurrentUserProvider : ICurrentUserProvider
                 ?? user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
     }
+
+    public Guid? UserId => Guid.TryParse(CurrentUserId, out var guid) ? guid : null;
 }

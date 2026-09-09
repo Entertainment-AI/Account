@@ -31,8 +31,8 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.Property(o => o.PaidAt).HasColumnName("PaidAt");
         builder.Property(o => o.Metadata).HasColumnName("Metadata").HasColumnType("jsonb");
 
-        builder.HasOne(o => o.User).WithMany().HasForeignKey(o => o.UserId).OnDelete(DeleteBehavior.Restrict);
-        builder.HasOne(o => o.Plan).WithMany().HasForeignKey(o => o.PlanId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne<User>().WithMany().HasForeignKey(o => o.UserId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne<Plan>().WithMany().HasForeignKey(o => o.PlanId).OnDelete(DeleteBehavior.Restrict);
 
         builder.Property(o => o.CreatedAt).HasColumnName("CreatedAt").IsRequired();
         builder.Property(o => o.UpdatedAt).HasColumnName("UpdatedAt");
