@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Account.Infrastructure.Persistence.Context;
 
-public class AccountDbContext : BaseDbContext, IAccountDbContext
+public class AccountDbContext : BaseDbContext
 {
     public AccountDbContext(
         DbContextOptions<AccountDbContext> options,

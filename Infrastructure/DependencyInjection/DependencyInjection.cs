@@ -28,7 +28,6 @@ public static class DependencyInjection
             options.UseNpgsql(connectionString);
         });
 
-        services.AddScoped<IAccountDbContext>(provider => provider.GetRequiredService<AccountDbContext>());
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
